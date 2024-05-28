@@ -31,7 +31,6 @@ const contactFormSchema = new mongoose.Schema({
   subject: String,
   phone: Number,
   message: String,
-  // terms_and_policy: Boolean
 });
 
 // Create a model based on the schema
