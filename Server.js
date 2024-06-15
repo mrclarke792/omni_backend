@@ -9,7 +9,7 @@ dotenv.config();
 const PORT = process.env.PORT || 3003;
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://khamareclarke:khamareclarke@cluster0.tdxrvkr.mongodb.net/', {
+mongoose.connect('mongodb+srv://khamareclarke:khamareclarke@cluster0.tdxrvkr.mongodb.net', {
   
 }).then(() => {
   console.log("Connected to MongoDB");
@@ -33,7 +33,6 @@ const contactFormSchema = new mongoose.Schema({
   subject: String,
   phone: Number,
   message: String,
-  terms_and_policy: Boolean
 });
 
 // Create a model based on the schema
