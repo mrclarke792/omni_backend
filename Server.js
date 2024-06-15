@@ -21,7 +21,9 @@ mongoose.connect('mongodb+srv://khamareclarke:khamareclarke@cluster0.tdxrvkr.mon
 const formDataSchema = new mongoose.Schema({
   name: String,
   contactNumber: String,
-  email: String
+  email: String,
+  subject: String,
+  message: String,
 });
 
 // Define a schema for the contact form data
@@ -38,6 +40,9 @@ const contactFormSchema = new mongoose.Schema({
 const FormData = mongoose.model('FormData', formDataSchema);
 // Create a model based on the contact form schema
 const ContactForm = mongoose.model('ContactForm', contactFormSchema);
+const FormData_kC = mongoose.model('FormData_kC', formDataSchema);
+// Create a model based on the contact form schema
+const ContactForm_KC = mongoose.model('ContactForm_KC', contactFormSchema);
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -45,8 +50,9 @@ app.use(express.json());
 // Add CORS middleware to allow requests from all origins
 app.use(cors());
 app.get('/', async (req, res) => {
-res.send('Server is Running');
+res.send('Server is Running Now');
 });
+
 // Route to handle form submission
 app.post('/submit', async (req, res) => {
   try {
@@ -77,7 +83,7 @@ app.post('/submitContactForm', async (req, res) => {
       subject: req.body.subject,
       phone: req.body.phone,
       message: req.body.message,
-      terms_and_policy: req.body.terms_and_policy
+      // terms_and_policy: req.body.terms_and_policy
     });
 
     // Save the document to the database
@@ -89,7 +95,34 @@ app.post('/submitContactForm', async (req, res) => {
     res.status(500).json({ success: false, message: 'Error saving contact form data' });
   }
 });
+app.post('/submit/form', async (req, res) => {
+  try {
+    // Create a new FormData document with the submitted data
+    const formData = new FormData_kC(req.body)
 
+    // Save the document to the database
+    await formData.save();
+
+    res.json({ success: true, message: 'Form data saved successfully' });
+  } catch (error) {
+    console.error("Error saving form data:", error);
+    res.status(500).json({ success: false, message: 'Error saving form data' });
+  }
+});
+app.post('/submit/contact', async (req, res) => {
+  try {
+    // Create a new ContactForm document with the submitted data
+    const contactFormData = new ContactForm_KC(req.body);
+
+    // Save the document to the database
+    await contactFormData.save();
+
+    res.json({ success: true, message: 'Contact form data saved successfully' });
+  } catch (error) {
+    console.error("Error saving contact form data:", error);
+    res.status(500).json({ success: false, message: 'Error saving contact form data' });
+  }
+});
 
 // Start the server
 app.listen(PORT, () => {
